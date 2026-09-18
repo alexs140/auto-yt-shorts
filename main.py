@@ -1,4 +1,5 @@
-import os
+
+      import os
 import requests
 import google.generativeai as genai
 
@@ -9,11 +10,18 @@ genai.configure(api_key=GEMINI_KEY)
 
 def generate_short_content():
     try:
-        # 1. Generate Script using standard Gemini Flash model
-        model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        # Auto-detect available active model
+        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        print("Available models:", available_models)
+        
+        # Pick the first available flash or content model
+        selected_model = available_models[0] if available_models else 'models/gemini-1.5-flash'
+        print("Using model:", selected_model)
+
+        model = genai.GenerativeModel(selected_model)
         prompt = "Give me 1 crazy trending scientific fact for YouTube Shorts in Odia/English mix under 30 words with 1 keyword for video search."
         response = model.generate_content(prompt)
-        
+
         print("--- GENERATED SCRIPT ---")
         print(response.text)
 
@@ -21,13 +29,11 @@ def generate_short_content():
         headers = {"Authorization": PEXELS_KEY}
         url = "https://api.pexels.com/videos/search?query=nature&per_page=1&orientation=portrait"
         res = requests.get(url, headers=headers).json()
-        
+
         if res.get('videos') and len(res['videos']) > 0:
             video_url = res['videos'][0]['video_files'][0]['link']
             print("--- FETCHED VIDEO URL ---")
             print(video_url)
-        else:
-            print("Pexels response:", res)
 
     except Exception as e:
         print("ERROR DETAILS:", str(e))
