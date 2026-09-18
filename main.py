@@ -9,20 +9,31 @@ PEXELS_KEY = os.environ.get("PEXELS_API_KEY")
 genai.configure(api_key=GEMINI_KEY)
 
 def generate_short_content():
-    # 1. Generate Script
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    prompt = "Give me 1 crazy trending scientific fact for YouTube Shorts in Odia/English mix under 30 words with 1 keyword for video search."
-    response = model.generate_content(prompt)
-    print("Generated Script:", response.text)
+    try:
+        # Fetch dynamic model list
+        models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        model_name = models[0] if models else 'gemini-1.5-flash'
+        
+        # 1. Generate Script
+        model = genai.GenerativeModel(model_name)
+        prompt = "Give me 1 crazy trending scientific fact for YouTube Shorts in Odia/English mix under 30 words with 1 keyword for video search."
+        response = model.generate_content(prompt)
+        print("--- GENERATED SCRIPT ---")
+        print(response.text)
 
-    # 2. Fetch Stock Video from Pexels
-    headers = {"Authorization": PEXELS_KEY}
-    url = "https://api.pexels.com/videos/search?query=nature&per_page=1&orientation=portrait"
-    res = requests.get(url, headers=headers).json()
-    if res.get('videos'):
-        video_url = res['videos'][0]['video_files'][0]['link']
-        print("Fetched Background Video URL:", video_url)
+        # 2. Fetch Stock Video from Pexels
+        headers = {"Authorization": PEXELS_KEY}
+        url = "https://api.pexels.com/videos/search?query=nature&per_page=1&orientation=portrait"
+        res = requests.get(url, headers=headers).json()
+        if res.get('videos'):
+            video_url = res['videos'][0]['video_files'][0]['link']
+            print("--- FETCHED VIDEO URL ---")
+            print(video_url)
+    except Exception as e:
+        print("ERROR DETAILS:", str(e))
+        raise e
 
 if __name__ == "__main__":
     generate_short_content()
+        
   
