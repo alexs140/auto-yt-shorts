@@ -10,12 +10,8 @@ genai.configure(api_key=GEMINI_KEY)
 
 def generate_short_content():
     try:
-        # Fetch dynamic model list
-        models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        model_name = models[0] if models else 'gemini-1.5-flash'
-        
-        # 1. Generate Script
-        model = genai.GenerativeModel(model_name)
+        # 1. Generate Script using latest updated model
+        model = genai.GenerativeModel('gemini-2.5-flash')
         prompt = "Give me 1 crazy trending scientific fact for YouTube Shorts in Odia/English mix under 30 words with 1 keyword for video search."
         response = model.generate_content(prompt)
         print("--- GENERATED SCRIPT ---")
@@ -35,5 +31,6 @@ def generate_short_content():
 
 if __name__ == "__main__":
     generate_short_content()
+        
         
   
