@@ -9,10 +9,8 @@ genai.configure(api_key=GEMINI_KEY)
 
 def generate_short_content():
     try:
-        # Dynamic model selection to avoid model name deprecation errors
         available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
         selected_model = available_models[0] if available_models else 'models/gemini-1.5-flash'
-        print("Using model:", selected_model)
 
         model = genai.GenerativeModel(selected_model)
         prompt = "Give me 1 crazy trending scientific fact for YouTube Shorts in Odia/English mix under 30 words with 1 keyword for video search."
@@ -21,7 +19,6 @@ def generate_short_content():
         print("--- GENERATED SCRIPT ---")
         print(response.text)
 
-        # Fetch Stock Video from Pexels
         headers = {"Authorization": PEXELS_KEY}
         url = "https://api.pexels.com/videos/search?query=nature&per_page=1&orientation=portrait"
         res = requests.get(url, headers=headers).json()
@@ -37,6 +34,7 @@ def generate_short_content():
 
 if __name__ == "__main__":
     generate_short_content()
+        
           
         
         
