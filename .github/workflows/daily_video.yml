@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-run:
-    runs-on: ubuntu-latest
+    runs-runs-on: ubuntu-latest
     steps:
       - name: Check repository
         uses: actions/checkout@v4
@@ -19,12 +19,13 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install google-generativeai requests
+          pip install google-genai google-generativeai requests
 
       - name: Run Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python main.py
+        
         
         
