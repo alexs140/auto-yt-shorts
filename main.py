@@ -6,7 +6,7 @@ if not GEMINI_KEY or not PEXELS_KEY:
     sys.exit("ERROR: GEMINI_API_KEY ba PEXELS_API_KEY secret missing")
 
 # Gemini (fixed model, REST call - no old library)
-url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
 prompt = "Give me 1 crazy trending scientific fact for YouTube Shorts in Odia/English mix under 30 words. Last line: KEYWORD: <one english word for video search>"
 r = requests.post(url, headers={"x-goog-api-key": GEMINI_KEY}, json={"contents":[{"parts":[{"text":prompt}]}]}, timeout=60)
 if r.status_code != 200:
